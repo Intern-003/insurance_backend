@@ -100,7 +100,7 @@ class InsurancePlanController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+public function store(Request $request)
 {
     $request->validate([
         'category' => 'required|in:health,car,life,travel,bike,home,business,investment',
@@ -108,27 +108,67 @@ class InsurancePlanController extends Controller
         'slug' => 'required|string|unique:insurance_plans,slug',
         'company_name' => 'required|string|max:255',
         'starting_price' => 'required|numeric',
+
+        // IMAGE VALIDATION
+        'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
 
+    /*
+    |--------------------------------------------------------------------------
+    | UPLOAD LOGO
+    |--------------------------------------------------------------------------
+    */
+
+    $logoPath = null;
+
+    if ($request->hasFile('logo')) {
+
+        // STORE IMAGE IN storage/app/public/plans
+        $logoPath = $request->file('logo')
+            ->store('plans', 'public');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CREATE PLAN
+    |--------------------------------------------------------------------------
+    */
+
     $plan = InsurancePlan::create([
+
         'category' => $request->category,
+
         'plan_name' => $request->plan_name,
+
         'slug' => $request->slug,
+
         'company_name' => $request->company_name,
-        'logo' => $request->logo,
+
+        // SAVE FILE PATH
+        'logo' => $logoPath,
+
         'short_description' => $request->short_description,
+
         'description' => $request->description,
+
         'starting_price' => $request->starting_price,
+
         'cashless_hospitals' => $request->cashless_hospitals,
+
         'claim_ratio' => $request->claim_ratio,
+
         'is_featured' => $request->is_featured ?? false,
+
         'is_popular' => $request->is_popular ?? false,
+
         'status' => true,
     ]);
 
     return response()->json([
         'status' => true,
+
         'message' => 'Insurance plan created successfully',
+
         'plan' => $plan,
     ]);
 }
