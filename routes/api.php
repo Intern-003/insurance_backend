@@ -3,16 +3,12 @@
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\InsurancePlanController;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| PUBLIC ROUTES
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
 */
 
 Route::get('/ha', function () {
@@ -22,6 +18,47 @@ Route::get('/ha', function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+/*
+|--------------------------------------------------------------------------
+| INSURANCE PUBLIC APIs
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/insurance-plans/{category}',
+    [InsurancePlanController::class, 'index']
+);
+
+Route::get(
+    '/insurance-plan/{slug}',
+    [InsurancePlanController::class, 'show']
+);
+Route::post(
+    '/insurance-plan',
+    [InsurancePlanController::class, 'store']
+);
+
+Route::post(
+    '/insurance-coverage',
+    [InsurancePlanController::class, 'storeCoverage']
+);
+
+Route::post(
+    '/insurance-feature',
+    [InsurancePlanController::class, 'storeFeature']
+);
+
+Route::post(
+    '/insurance-rider',
+    [InsurancePlanController::class, 'storeRider']
+);
+
+/*
+|--------------------------------------------------------------------------
+| PROTECTED ROUTES
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', function (Request $request) {
@@ -29,5 +66,4 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
-
 });
