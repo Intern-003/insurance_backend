@@ -73,32 +73,53 @@ class InsurancePlanController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function show($slug)
-    {
-        $plan = InsurancePlan::with([
-            'coverages',
-            'features',
-            'riders',
-        ])
-        ->where('slug', $slug)
-        ->where('status', true)
-        ->first();
+public function show($slug)
+{
+    /*
+    |--------------------------------------------------------------------------
+    | FETCH PLAN USING SLUG
+    |--------------------------------------------------------------------------
+    */
 
-        // PLAN NOT FOUND
-        if (!$plan) {
+    $plan = InsurancePlan::with([
+        'coverages',
+        'features',
+        'riders',
+    ])
 
-            return response()->json([
-                'status' => false,
-                'message' => 'Insurance plan not found',
-            ], 404);
-        }
+    ->where('slug', $slug)
+
+    ->first();
+
+    /*
+    |--------------------------------------------------------------------------
+    | PLAN NOT FOUND
+    |--------------------------------------------------------------------------
+    */
+
+    if (!$plan) {
 
         return response()->json([
-            'status' => true,
 
-            'plan' => $plan,
-        ]);
+            'status' => false,
+
+            'message' => 'Insurance plan not found',
+        ], 404);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUCCESS RESPONSE
+    |--------------------------------------------------------------------------
+    */
+
+    return response()->json([
+
+        'status' => true,
+
+        'plan' => $plan,
+    ]);
+}
 
 public function store(Request $request)
 {
