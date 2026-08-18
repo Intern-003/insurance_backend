@@ -49,10 +49,10 @@ class InsurancePlan extends Model
     |--------------------------------------------------------------------------
     */
 
-    // public function coverages()
-    // {
-    //     return $this->hasMany(InsuranceCoverage::class);
-    // }
+    public function coverages()
+    {
+        return $this->hasMany(InsuranceCoverage::class);
+    }
 
     public function features()
     {
@@ -83,11 +83,4 @@ class InsurancePlan extends Model
     {
         return '₹' . number_format($this->starting_price, 0);
     }
-    public function coverages()
-{
-    return $this->hasMany(
-        InsuranceCoverage::class,
-        'insurance_plan_id'
-    );
-}
 }
