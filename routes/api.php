@@ -4,10 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InsurancePlanController;
-use App\Http\Controllers\Api\InsuranceProposalController;
-use App\Http\Controllers\Api\InsuranceLeadController;
-use App\Http\Controllers\Api\InsurancePlanSelectionController;
-use App\Http\Controllers\Api\RenewalController;
+
 /*
 |--------------------------------------------------------------------------
 | PUBLIC ROUTES
@@ -58,68 +55,6 @@ Route::post(
 
 /*
 |--------------------------------------------------------------------------
-| INSURANCE PROPOSAL APIs
-|--------------------------------------------------------------------------
-*/
-
-Route::post(
-    '/store-insurance-proposal',
-    [InsuranceProposalController::class, 'store']
-);
-
-Route::get(
-    '/insurance-proposal/{application_number}',
-    [InsuranceProposalController::class, 'show']
-);
-
-Route::post(
-    '/complete-payment',
-    [InsuranceProposalController::class, 'completePayment']
-);
-
-
-
-
-Route::get(
-    '/invoice/{application_number}',
-    [InsuranceProposalController::class, 'invoice']
-); 
-
-Route::post(
-    '/store-insurance-lead',
-    [InsuranceLeadController::class, 'store']
-);
-Route::post(
-    '/store-plan-selection',
-    [InsurancePlanSelectionController::class, 'store']
-);
-
-
-
-Route::prefix('renewals')->group(function () {
-
-    Route::post('/verify', [RenewalController::class, 'verify']);
-
-    Route::get('/policy/{id}', [RenewalController::class, 'getPolicy']);
-
-    Route::post('/update-proposal/{id}', [RenewalController::class, 'updateProposal']);
-
-});
-
-Route::get(
-    '/renewal-details/{proposal_id}',
-    [RenewalController::class, 'renewalDetails']
-);
-
-Route::post(
-    '/update-renewal',
-    [RenewalController::class, 'updateRenewal']
-);
-
-
-
-/*
-|--------------------------------------------------------------------------
 | PROTECTED ROUTES
 |--------------------------------------------------------------------------
 */
@@ -132,6 +67,3 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-
-
- 
